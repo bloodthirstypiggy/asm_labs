@@ -1,0 +1,1 @@
+first lab is about counting mathematical expressions, unsigned. If there is an overflow, program shoud go out. all data is a half-word, only e is a word. 
