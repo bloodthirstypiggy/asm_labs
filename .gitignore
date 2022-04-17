@@ -1,0 +1,6 @@
+prog1
+prog1.o
+prog1elembyelem.o
+prog1withindexes.o
+prog1withindexes.s
+prog1copy.s
