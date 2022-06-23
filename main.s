@@ -18,108 +18,28 @@ fd1:
 	.skip	8
 fd2:
 	.skip	8
-mes4:
-    .string "lol"
 	.text
 	.align	2
 	.global _start
 	.type	_start, %function
 _start:
-    ldr x1, [sp, #16]
-    mov x8, #56
-    mov x0, #-100
-    mov x2, #2
+    	ldr x1, [sp, #16]
+    	mov x8, #56
+    	mov x0, #-100
+    	mov x2, #0x241
     	mov x3, 0666
-
 	svc	#0
 
     adr x1, fd2
     str x0, [x1]
 
-    bl work
-    nop
-2:
-	mov	x0, #1
-	adr	x1, mes2
-	mov	x2, mes2len                 //print mes2
-	mov	x8, #64
-	svc	#0
-	mov	x0, #0
-	adr	x1, name2                       // in name2 name file for write
-	mov	x2, #1024                   // read file name to write
-	mov	x8, #63
-	//svc	#0
-	//cmp	x0, #1
-	//ble	3f
-	//cmp	x0, #1024
-	//bl	4f
-    b 4f
-3:
-	mov	x0, #1
-	b	9f              // in 9 erro
-4:
-	sub	x2, x0, #1
-	mov	x0, #-100
-	adr	x1, name2
-	strb	wzr, [x1, x2]
-    mov x2, #2
-	mov	x2, #0xc1               //if do not exist - okey, if exist - error
-	mov	x3, #0600
-	mov	x8, #56
-//	svc	#0
-	cmp	x0, #0
-	bge	7f
-	cmp	x0, #-17            // error file exist
-	bne	9f              // not equal -17 - not file exist error
-	mov	x0, #1
-	adr	x1, mes3
-	mov	x2, mes3len
-	mov	x8, #64                 // file exist error. Do you want to overwrite?
-	svc	#0
-	mov	x0, #0
-	adr	x1, ans
-	mov	x2, #3
-	mov	x8, #63
-	svc	#0
-	cmp	x0, #2          //success read. go to 5
-	beq	5f
-	mov	x0, #-17
-	b	9f
-5:              // check what user entered
-	adr	x1, ans
-	ldrb	w0, [x1]
-	cmp	w0, 'Y'
-	beq	6f
-	cmp	w0, 'y'
-	beq	6f
-	mov	x0, #-17
-	b	9f
-6:          // file existed. need to overwrite
-	mov	x0, #-100
-	adr	x1, name2
-	mov	x2, #0x201
-	mov	x8, #56
-	svc	#0
-	cmp	x0, #0
-	blt	9f
-7:                  //here we have new file opened to write in x1
-//	adr	x1, fd2             //x0 here is to from what read
-//	str	x0, [x1]
-	//bl	work
+	bl	work
 	adr	x0, fd2
 	ldr	x0, [x0]
-	//mov	x8, #57
+	mov	x8, #57
 	svc	#0
-	mov	x0, #0
 	b	1f
-9:
-	bl	writeerr
-	mov	x0, #1
-	b	1f
-8:
-	bl	writeerr
 
-#0:
 #	bl	writeerr
 #	adr	x0, fd1
 #	ldr	x0, [x0]
@@ -327,7 +247,8 @@ before115:
     b 0b
 
 11:
-     ldr x0, [x29, f2]
+	adr x0, fd2
+     ldr x0, [x0]
     add x1, x29, bufout
     mov x2, x8                  //x8 = kolvo simvolov v bufout
     mov x8, #64
